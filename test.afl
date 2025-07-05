@@ -1,0 +1,21 @@
+_SECTION_BEGIN("Point of Control");
+global shortPOC, poc, firstBarIndex, lastBarIndex;
+pocRange = Param("POC range", PERIOD_LONG_TERM, 0, 1000, step = 1);
+
+if (shortPOC == Null || poc == Null) {
+// Get POC of each current bar
+for (i = firstBarIndex; i <= lastBarIndex; i++) {
+startBar = IIf(i > c, i - pocRange, 0);
+poc[i] = getPoc(startBar, i);
+		
+startBar = IIf(i > PERIOD_SHORT_TERM, i - PERIOD_SHORT_TERM, 0);
+shortPOC[i] = getPoc(startBar, i);
+}
+}
+
+// Draw short POC line on chart.
+Plot(shortPOC, "Short Range POC", ParamColor("Short POC Color", colorViolet), styleThick);
+
+// Draw POC line on chart.
+Plot(poc, "POC", ParamColor("POC Color", colorGold), styleThick, zoder = 0);
+_SECTION_END();

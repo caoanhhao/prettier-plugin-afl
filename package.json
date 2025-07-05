@@ -1,0 +1,9 @@
+{
+  "name": "prettier-plugin-afl",
+  "version": "0.1.0",
+  "main": "index.js",
+  "keywords": ["prettier-plugin"],
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  }
+}
