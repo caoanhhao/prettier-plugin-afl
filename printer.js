@@ -1,8 +1,7 @@
-const indentUnit = options.useTabs ? '\t' : ' ';
-const indentWidth = options.indentWidth || 2;
+var indentUnit, tabWidth;
 
 function getIndent(level) {
-  return indentUnit.repeat(level * indentWidth);
+  return indentUnit.repeat(level * tabWidth);
 }
 
 function formatLine(line, indentLevel) {
@@ -23,8 +22,10 @@ function formatLine(line, indentLevel) {
 }
 
 module.exports = {
-  print(path) {
+  print(path, options) {
     const node = path.getValue();
+    indentUnit = options.useTabs ? '\t' : ' ';
+    tabWidth = options.tabWidth || 2;
 
     if (node.type === "Program") {
       let indentLevel = 0;
