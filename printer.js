@@ -1,16 +1,24 @@
+const indentUnit = options.useTabs ? '\t' : ' ';
+const indentWidth = options.indentWidth || 2;
+
 function getIndent(level) {
-  return "\t".repeat(level);
+  return indentUnit.repeat(level * indentWidth);
 }
 
 function formatLine(line, indentLevel) {
   const trimmed = line.trim();
 
-  // Nếu là dòng bắt đầu khối
+  // If the line is empty, do not add indent
+  if (trimmed === "") {
+    return trimmed;
+  }
+
+  // If the line starts a block
   if (/^(if|for|while|switch)\b.*\{$/.test(trimmed)) {
     return getIndent(indentLevel) + trimmed;
   }
 
-  // Dòng bình thường
+  // Normal line
   return getIndent(indentLevel) + trimmed;
 }
 
@@ -23,12 +31,12 @@ module.exports = {
       const lines = node.body.map(lineNode => {
         const line = lineNode.value.trim();
 
-        // Giảm indent nếu là dòng đóng khối
+        // Decrease indent if the line closes a block
         if (line === "}") indentLevel--;
 
         const formatted = formatLine(line, indentLevel);
 
-        // Tăng indent sau dòng mở khối
+        // Increase indent after a line that opens a block
         if (/{\s*$/.test(line)) indentLevel++;
 
         return formatted;
